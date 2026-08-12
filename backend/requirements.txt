@@ -1,0 +1,28 @@
+# 后端依赖（Python 3.11 推荐，3.13 兼容性待验证）
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+pydantic-settings>=2.3
+python-dotenv>=1.0
+
+# HTTP 客户端（调用远程生图服务 / DeepSeek API）
+httpx>=0.27
+openai>=1.40
+
+# RAG
+chromadb>=0.5
+sentence-transformers>=3.0
+numpy
+
+# 文创合成
+Pillow>=10.0
+
+# --- 以下为图像生成（仅在有 GPU 的机器 / 环境安装）---
+# 说明：本地 SDXL + LoRA 训练推理用。本地无 GPU 的开发机可不安装，
+# 通过 remote_api 或调用远程生图服务。
+# torch>=2.4
+# diffusers>=0.30
+# transformers>=4.44
+# accelerate>=0.33
+# safetensors>=0.4
+# peft>=0.12

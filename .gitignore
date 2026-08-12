@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# 环境变量与密钥
+.env
+*.key
+
+# 前端
+node_modules/
+dist/
+.vite/
+
+# 数据（大文件不入库）
+backend/app/data/vector_store/
+backend/app/data/*.jsonl
+backend/app/data/*.txt
+
+# 模型与图片产物
+*.safetensors
+*.ckpt
+*.onnx
+*.png
+*.jpg
+*.jpeg
+!docs/**/*.png
+
+# 日志
+*.log
+
+# IDE
+.idea/
+.vscode/
+.DS_Store

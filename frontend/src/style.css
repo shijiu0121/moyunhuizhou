@@ -1,0 +1,118 @@
+/* ================= 徽州 · 水墨国风 全局设计系统 ================= */
+:root {
+  /* 墨色体系 */
+  --ink: #241b15;
+  --ink-soft: #4a3a2a;
+  --ink-line: #9a8470;
+  --ink-faint: #d8c9ae;
+
+  /* 宣纸体系 */
+  --paper: #f3ece3;
+  --paper-light: #faf5ec;
+  --paper-dark: #e6dac7;
+
+  /* 点缀色 */
+  --brown: #6a4735;
+  --orange: #c57b3a;
+  --blue: #4f7681;
+  --red: #a03a2e;
+  --gold: #b08a4a;
+
+  /* Element Plus 主色改为桥木褐 */
+  --el-color-primary: #6a4735;
+  --el-color-primary-light-3: #8a6a55;
+  --el-color-primary-light-5: #a88870;
+  --el-color-primary-light-7: #c6a98d;
+  --el-color-primary-light-8: #d7c0a6;
+  --el-color-primary-light-9: #ede2d4;
+  --el-color-primary-dark-2: #4e3324;
+  --el-border-radius-base: 4px;
+
+  --zh-font: "STKaiti", "KaiTi", "楷体", "Kaiti SC", "Microsoft YaHei", sans-serif;
+  --num-font: Georgia, "Times New Roman", "STKaiti", serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.7), transparent 40%),
+    radial-gradient(ellipse at 85% 90%, rgba(106, 71, 53, 0.07), transparent 45%),
+    var(--paper);
+}
+
+h1, h2, h3, .zh {
+  font-family: var(--zh-font);
+  letter-spacing: 3px;
+}
+
+/* 页面通用容器 */
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+/* 页面大标题（墨笔横批式） */
+.page-head {
+  position: relative;
+  margin-bottom: 26px;
+}
+.page-head h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--ink);
+  display: inline-block;
+  padding: 0 4px 8px;
+  border-bottom: 3px solid var(--red);
+}
+.page-head p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* 水墨工具卡片 */
+.ink-card {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 45%),
+    var(--paper-light);
+  border: 1px solid rgba(106, 71, 53, 0.28);
+  border-radius: 6px;
+  box-shadow: 0 3px 16px rgba(74, 58, 42, 0.08);
+  padding: 20px;
+}
+
+/* ------- Element Plus 主题微调 ------- */
+.el-button--primary {
+  background: linear-gradient(120deg, #6a4735, #241b15);
+  border: none;
+}
+.el-button--primary:hover,
+.el-button--primary:focus {
+  background: linear-gradient(120deg, #a03a2e, #6a4735);
+}
+.el-card {
+  --el-card-border-color: rgba(106, 71, 53, 0.22);
+  background: var(--paper-light);
+  border-radius: 6px;
+  box-shadow: 0 3px 14px rgba(74, 58, 42, 0.06);
+}
+.el-input__wrapper,
+.el-textarea__inner {
+  background: rgba(255, 255, 255, 0.7);
+}
+.el-input__wrapper.is-focus,
+.el-textarea__inner:focus {
+  box-shadow: 0 0 0 1px #6a4735 inset;
+}
