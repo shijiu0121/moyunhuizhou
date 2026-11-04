@@ -27,7 +27,7 @@ backend/app/data/*.txt
 *.png
 *.jpg
 *.jpeg
-!docs/**/*.png
+!assets/**/*.png
 
 # 日志
 *.log
@@ -42,9 +42,6 @@ backend/app/data/*.txt
 !frontend/src/assets/**/*.png
 !frontend/src/assets/**/*.jpg
 !frontend/src/assets/**/*.jpeg
-!brand/*.png
-!deliverables/*.png
-!logo.jpg
 
 # 真实配置及切换模式时产生的临时文件
 .env.*
