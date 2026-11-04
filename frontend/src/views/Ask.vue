@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 import { askQuestion } from '../api'
 import { ElMessage } from 'element-plus'
 
@@ -67,6 +68,7 @@ const currentId = ref(sessions.value.length ? sessions.value[0].id : null)
 const messages = ref([])
 const sending = ref(false)
 const questionText = ref('')
+const route = useRoute()
 const threadRef = ref(null)
 
 let typeTimer = null
@@ -77,6 +79,8 @@ function ensureRuntime(m) {
   if (m.done === undefined) m.done = true
   if (!m.srcOpen) m.srcOpen = {}
   if (m.srcPanelOpen === undefined) m.srcPanelOpen = false
+  if (!Array.isArray(m.sources)) m.sources = []
+  if (!Array.isArray(m.followups)) m.followups = []
   return m
 }
 
@@ -223,9 +227,11 @@ async function onSend() {
       followups: computeFollowups(q),
     }
     messages.value.push(aiMsg)
+    // 必须拿数组里的“响应式代理对象”来做打字机，直接改原始 aiMsg 不会触发页面更新
+    const reactiveMsg = messages.value[messages.value.length - 1]
     persistSessions()
     scrollToBottom()
-    typeWrite(aiMsg)
+    typeWrite(reactiveMsg)
   } catch (e) {
     ElMessage.error('问答失败：请确认后端已启动且 DeepSeek 已配置')
     messages.value.push({
@@ -313,6 +319,7 @@ onMounted(() => {
   } else {
     newSession()
   }
+  if (typeof route.query.question === 'string') questionText.value = route.query.question
 })
 
 onBeforeUnmount(() => {
@@ -325,6 +332,11 @@ onBeforeUnmount(() => {
     <div class="page-head">
       <h2>徽史问答官</h2>
       <p>基于徽文化知识库的智能问答 —— 先检索，再回答，言必有据</p>
+      <router-link class="knowledge-entry" to="/ask/knowledge">
+        <span class="knowledge-seal">图</span>
+        <span>探索徽州知识图谱 <small>循着文脉，发现知识之间的联系</small></span>
+        <span aria-hidden="true">↗</span>
+      </router-link>
     </div>
 
     <div class="ask-wrap">
@@ -360,7 +372,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="side-note">
-          引擎：bge-m3 本地向量检索 + DeepSeek 大模型
+          引擎：BGE 中文向量检索 + DeepSeek 大模型
           <br />
           回答末尾标注 [来源N]，点击可查看对应资料
         </div>
@@ -477,6 +489,20 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .ask-page { max-width: 1180px; }
+.ask-page .page-head { padding-right: 340px; }
+.knowledge-entry {
+  position: absolute; right: 0; top: 3px; display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; border: 1px solid var(--ink-faint); border-radius: 4px;
+  background: var(--paper-light); color: var(--brown); text-decoration: none; font-size: 14px;
+  transition: border-color .2s, transform .2s;
+}
+.knowledge-entry:hover { border-color: var(--red); transform: translateY(-2px); }
+.knowledge-entry small { display: block; margin-top: 5px; color: var(--ink-line); font-size: 11px; }
+.knowledge-seal { color: var(--red); border: 1px solid currentColor; padding: 4px; font: 22px var(--zh-font); }
+@media (max-width: 900px) {
+  .ask-page .page-head { padding-right: 0; }
+  .knowledge-entry { position: static; margin-top: 16px; width: fit-content; }
+}
 
 /* ============ 双栏布局（等高） ============ */
 .ask-wrap {

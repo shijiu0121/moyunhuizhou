@@ -1,20 +1,5 @@
 <template>
   <aside class="right-column">
-    <!-- 实时热词 -->
-    <CPanel class="col-panel">
-      <template #title>徽州热词</template>
-      <template #content>
-        <div class="hot-cloud">
-          <span
-            v-for="(w, i) in hotWords"
-            :key="w"
-            class="hot-tag"
-            :style="tagStyle(i)"
-          >{{ w }}</span>
-        </div>
-      </template>
-    </CPanel>
-
     <!-- 徽州非遗名录 -->
     <CPanel class="col-panel">
       <template #title>徽州非遗名录</template>
@@ -46,20 +31,8 @@ import { ref } from 'vue'
 import * as echarts from 'echarts'
 import CPanel from './CPanel.vue'
 import CEcharts from './CEcharts.vue'
-import { HOT_WORDS, HERITAGE_LIST, CRAFT_CATEGORIES } from '../data/huizhouData'
+import { HERITAGE_LIST, CRAFT_CATEGORIES } from '../data/huizhouData'
 import { INK, inkAxisLabel } from '../modules/inkTheme'
-
-const hotWords = HOT_WORDS
-const sizes = [14, 18, 22, 16, 20, 15, 24, 17, 19, 13, 21, 16, 14, 18]
-const colors = ['#241b15', '#6a4735', '#a03a2e', '#4f7681', '#6a4735', '#241b15', '#c57b3a', '#4a3a2a']
-function tagStyle(i) {
-  return {
-    fontSize: `${sizes[i % sizes.length]}px`,
-    color: colors[i % colors.length],
-    animationDelay: `${(i % 5) * 0.9}s`,
-    animationDuration: `${4 + (i % 3)}s`,
-  }
-}
 
 const heritage = HERITAGE_LIST
 // 复制两份实现无缝滚动
@@ -114,30 +87,6 @@ const craftOption = ref({
   z-index: 5;
 }
 .col-panel { flex: 1; min-height: 0; }
-
-/* 热词 */
-.hot-cloud {
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  gap: 8px 14px;
-  padding: 6px 4px;
-}
-.hot-tag {
-  font-family: 'STKaiti', '楷体', serif;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 2px 6px;
-  cursor: default;
-  animation: floatY 5s ease-in-out infinite;
-}
-@keyframes floatY {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
 
 /* 非遗滚动 */
 .heritage-viewport { height: 100%; overflow: hidden; }

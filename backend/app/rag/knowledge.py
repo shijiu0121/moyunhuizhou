@@ -10,21 +10,30 @@ from pathlib import Path
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 
-def load_knowledge_texts() -> list[str]:
-    """读取 data/ 下的知识条目（JSON Lines 或纯文本），返回文本列表。"""
-    texts = []
+def load_knowledge_entries() -> list[dict]:
+    """读取原始条目，保留标题、文件来源与全文，供问答和图谱共用。"""
+    entries = []
     for f in sorted(DATA_DIR.glob("*.jsonl")):
-        for line in f.read_text(encoding="utf-8").splitlines():
+        for number, line in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
             if not line.strip():
                 continue
             try:
                 item = json.loads(line)
-                texts.append(item.get("text", ""))
+                entries.append({
+                    "title": item.get("title") or f"{f.stem} · {number}",
+                    "source": f"{f.name}:{number}",
+                    "text": item.get("text", ""),
+                })
             except json.JSONDecodeError:
                 continue
     for f in sorted(DATA_DIR.glob("*.txt")):
-        texts.append(f.read_text(encoding="utf-8"))
-    return [t for t in texts if t.strip()]
+        entries.append({"title": f.stem, "source": f.name, "text": f.read_text(encoding="utf-8")})
+    return [entry for entry in entries if entry["text"].strip()]
+
+
+def load_knowledge_texts() -> list[str]:
+    """保持问答原有的文本顺序与内容，供向量切块使用。"""
+    return [entry["text"] for entry in load_knowledge_entries()]
 
 
 def chunk_text(text: str, chunk_size: int = 200, overlap: int = 50) -> list[str]:

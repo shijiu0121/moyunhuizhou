@@ -17,9 +17,9 @@ function go(path) { router.push(path) }
 
 /* ================= 数据信任条 ================= */
 const stats = [
-  { label: '知识库条目', value: 1280 },
+  { label: '知识库条目', value: 60 },
   { label: '徽州文化景点', value: 43 },
-  { label: '非遗名录', value: 38 },
+  { label: '非遗名录', value: 10 },
   { label: '文化圈城市', value: 8 },
 ]
 const statVals = ref(stats.map(() => 0))
@@ -39,7 +39,7 @@ const features = [
   {
     tag: 'AI 问答', title: '徽史问答官', path: '/ask', type: 'chat',
     desc: '基于徽文化知识库的 RAG 智能讲解，有问必答、言必有据。从徽商源流到徽剧腔调，从三雕技艺到民俗节令，知无不言。',
-    points: ['1,280+ 条徽文化知识库', '检索增强生成，回答附出处', '徽商 / 徽剧 / 三雕 / 民俗全覆盖'],
+    points: ['60+ 篇徽文化知识库', '检索增强生成，回答附出处', '徽商 / 徽剧 / 三雕 / 民俗全覆盖'],
   },
   {
     tag: '文创制作', title: '文创印务局', path: '/craft', type: 'craft',
@@ -234,7 +234,7 @@ onBeforeUnmount(() => {
           <div v-if="f.type === 'map'" class="mock mock-map">
             <div class="mock-head"><i></i><i></i><i></i><span>徽州意象馆 · 数据大屏</span></div>
             <div class="mock-map-body">
-              <div class="mock-stat"><b>1280</b><span>知识库条目</span></div>
+              <div class="mock-stat"><b>60</b><span>知识库条目</span></div>
               <div class="mock-stat"><b>43</b><span>核心景点</span></div>
               <div class="mock-stat"><b>38</b><span>非遗名录</span></div>
               <div class="mock-bars">

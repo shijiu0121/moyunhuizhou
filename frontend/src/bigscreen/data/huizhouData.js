@@ -4,8 +4,8 @@
 // 【数据口径说明 —— 请务必阅读】
 // 1. 景点清单/等级：2026-08 通过公开网络检索（政府文旅官网/百科/旅游平台）整理核实。
 // 2. 经纬度：为人工核对的近似值（精确到小数点后两位，供地图展示定位，非测量级精度）。
-// 3. 游客量 value / 底部指标 / 热词 / 非遗名录：均为【示例演示数据】，不代表真实统计。
-// 4. 正式比赛口径：数据采集阶段将逐条核对并接入后端 API 实时数据。
+// 3. 游客量等无官方统计口径的字段（排行/画像/热词）已移除，不展示未经核实的统计数字。
+// 4. 知识库文档 60 篇为项目真实加载；文旅指标待接入官方年度口径。
 // 完整来源留档见 docs/数据来源清单.md
 // =====================================================================
 
@@ -25,66 +25,66 @@ export const HUIZHOU_CIRCLE_CITIES = [
 ]
 
 // ---------------- 景点数据（43 处，按市分类） ----------------
-// lng/lat 为近似经纬度；value 为示例游客量（万人次/年）；level 为景区等级或属性
+// lng/lat 为近似经纬度；visitors 为该景区 2024 年官方发布接待量（仅黄山主景区有权威数据，万人次）；level 为景区等级或属性
 export const CULTURE_SITES = [
   // ===== 黄山市（徽州核心） =====
-  { name: '黄山风景区', city: '黄山市', county: '黄山区', lat: 30.12, lng: 118.16, value: 320, level: '5A', cat: 'nature', desc: '天下第一奇山 · 世界自然与文化双遗产' },
-  { name: '宏村', city: '黄山市', county: '黟县', lat: 30.00, lng: 117.99, value: 185, level: '5A·世遗', cat: 'village', desc: '画里乡村 · 世界文化遗产' },
-  { name: '西递', city: '黄山市', county: '黟县', lat: 29.91, lng: 117.96, value: 152, level: '5A·世遗', cat: 'village', desc: '明清民居博物馆 · 世界文化遗产' },
-  { name: '徽州古城', city: '黄山市', county: '歙县', lat: 29.87, lng: 118.42, value: 96, level: '5A', cat: 'culture', desc: '中国四大古城之一 · 渔梁坝在侧' },
-  { name: '屯溪老街', city: '黄山市', county: '屯溪区', lat: 29.71, lng: 118.34, value: 128, level: '4A', cat: 'culture', desc: '流动的清明上河图 · 徽商发源地' },
-  { name: '呈坎', city: '黄山市', county: '徽州区', lat: 29.86, lng: 118.26, value: 74, level: '5A', cat: 'village', desc: '中国风水第一村 · 太极八卦布局' },
-  { name: '棠樾牌坊群·鲍家花园', city: '黄山市', county: '歙县', lat: 29.89, lng: 118.43, value: 58, level: '5A', cat: 'culture', desc: '徽州牌坊文化的集中代表' },
-  { name: '齐云山', city: '黄山市', county: '休宁县', lat: 29.80, lng: 118.05, value: 39, level: '4A', cat: 'nature', desc: '江南第一仙都 · 中国四大道教名山' },
+  { name: '黄山风景区', city: '黄山市', county: '黄山区', lat: 30.12, lng: 118.16, visitors: 490, level: '5A', cat: 'nature', desc: '天下第一奇山 · 世界自然与文化双遗产' },
+  { name: '宏村', city: '黄山市', county: '黟县', lat: 30.00, lng: 117.99, level: '5A·世遗', cat: 'village', desc: '画里乡村 · 世界文化遗产' },
+  { name: '西递', city: '黄山市', county: '黟县', lat: 29.91, lng: 117.96, level: '5A·世遗', cat: 'village', desc: '明清民居博物馆 · 世界文化遗产' },
+  { name: '徽州古城', city: '黄山市', county: '歙县', lat: 29.87, lng: 118.42, level: '5A', cat: 'culture', desc: '中国四大古城之一 · 渔梁坝在侧' },
+  { name: '屯溪老街', city: '黄山市', county: '屯溪区', lat: 29.71, lng: 118.34, level: '4A', cat: 'culture', desc: '流动的清明上河图 · 徽商发源地' },
+  { name: '呈坎', city: '黄山市', county: '徽州区', lat: 29.86, lng: 118.26, level: '5A', cat: 'village', desc: '中国风水第一村 · 太极八卦布局' },
+  { name: '棠樾牌坊群·鲍家花园', city: '黄山市', county: '歙县', lat: 29.89, lng: 118.43, level: '5A', cat: 'culture', desc: '徽州牌坊文化的集中代表' },
+  { name: '齐云山', city: '黄山市', county: '休宁县', lat: 29.80, lng: 118.05, level: '4A', cat: 'nature', desc: '江南第一仙都 · 中国四大道教名山' },
 
   // ===== 宣城市 =====
-  { name: '龙川景区', city: '宣城市', county: '绩溪县', lat: 30.07, lng: 118.60, value: 61, level: '5A', cat: 'village', desc: '胡氏宗祠被誉为「江南第一祠」' },
-  { name: '敬亭山', city: '宣城市', county: '宣州区', lat: 30.97, lng: 118.75, value: 42, level: '4A', cat: 'nature', desc: '江南诗山 · 相看两不厌唯有敬亭山' },
-  { name: '桃花潭', city: '宣城市', county: '泾县', lat: 30.48, lng: 118.36, value: 46, level: '4A', cat: 'culture', desc: '桃花潭水深千尺 · 不及汪伦送我情' },
-  { name: '查济古镇', city: '宣城市', county: '泾县', lat: 30.43, lng: 118.36, value: 38, level: '4A', cat: 'village', desc: '中华写生第一村 · 现存最大明清古村' },
-  { name: '徽杭古道', city: '宣城市', county: '绩溪县', lat: 30.30, lng: 118.75, value: 30, level: '4A', cat: 'nature', desc: '中国第一古道 · 徽商走出去的路' },
+  { name: '龙川景区', city: '宣城市', county: '绩溪县', lat: 30.07, lng: 118.60, level: '5A', cat: 'village', desc: '胡氏宗祠被誉为「江南第一祠」' },
+  { name: '敬亭山', city: '宣城市', county: '宣州区', lat: 30.97, lng: 118.75, level: '4A', cat: 'nature', desc: '江南诗山 · 相看两不厌唯有敬亭山' },
+  { name: '桃花潭', city: '宣城市', county: '泾县', lat: 30.48, lng: 118.36, level: '4A', cat: 'culture', desc: '桃花潭水深千尺 · 不及汪伦送我情' },
+  { name: '查济古镇', city: '宣城市', county: '泾县', lat: 30.43, lng: 118.36, level: '4A', cat: 'village', desc: '中华写生第一村 · 现存最大明清古村' },
+  { name: '徽杭古道', city: '宣城市', county: '绩溪县', lat: 30.30, lng: 118.75, level: '4A', cat: 'nature', desc: '中国第一古道 · 徽商走出去的路' },
 
   // ===== 池州市 =====
-  { name: '九华山', city: '池州市', county: '青阳县', lat: 30.48, lng: 117.78, value: 210, level: '5A', cat: 'nature', desc: '中国四大佛教名山 · 地藏菩萨道场' },
-  { name: '杏花村', city: '池州市', county: '贵池区', lat: 30.66, lng: 117.48, value: 33, level: '4A', cat: 'culture', desc: '牧童遥指杏花村 · 1300 年诗村' },
-  { name: '升金湖', city: '池州市', county: '东至县', lat: 30.35, lng: 116.98, value: 15, level: '国家级保护区', cat: 'nature', desc: '中国鹤湖 · 珍稀水禽天堂' },
-  { name: '牯牛降', city: '池州市', county: '石台县', lat: 30.02, lng: 117.47, value: 27, level: '4A', cat: 'nature', desc: '华东最后一片原始森林' },
-  { name: '大王洞', city: '池州市', county: '贵池区', lat: 30.55, lng: 117.45, value: 18, level: '4A', cat: 'nature', desc: '华东第一洞 · 喀斯特溶洞奇观' },
+  { name: '九华山', city: '池州市', county: '青阳县', lat: 30.48, lng: 117.78, level: '5A', cat: 'nature', desc: '中国四大佛教名山 · 地藏菩萨道场' },
+  { name: '杏花村', city: '池州市', county: '贵池区', lat: 30.66, lng: 117.48, level: '4A', cat: 'culture', desc: '牧童遥指杏花村 · 1300 年诗村' },
+  { name: '升金湖', city: '池州市', county: '东至县', lat: 30.35, lng: 116.98, level: '国家级保护区', cat: 'nature', desc: '中国鹤湖 · 珍稀水禽天堂' },
+  { name: '牯牛降', city: '池州市', county: '石台县', lat: 30.02, lng: 117.47, level: '4A', cat: 'nature', desc: '华东最后一片原始森林' },
+  { name: '大王洞', city: '池州市', county: '贵池区', lat: 30.55, lng: 117.45, level: '4A', cat: 'nature', desc: '华东第一洞 · 喀斯特溶洞奇观' },
 
   // ===== 安庆市 =====
-  { name: '天柱山', city: '安庆市', county: '潜山市', lat: 30.72, lng: 116.45, value: 88, level: '5A', cat: 'nature', desc: '古南岳 · 奇峰怪石云海幽洞' },
-  { name: '迎江寺·振风塔', city: '安庆市', county: '迎江区', lat: 30.51, lng: 117.06, value: 20, level: '国家级文保', cat: 'culture', desc: '万里长江第一塔' },
-  { name: '花亭湖', city: '安庆市', county: '太湖县', lat: 30.42, lng: 116.33, value: 24, level: '4A', cat: 'nature', desc: '大别山南麓 · 千岛之湖' },
-  { name: '小孤山', city: '安庆市', county: '宿松县', lat: 29.98, lng: 116.35, value: 11, level: '省级名胜', cat: 'nature', desc: '长江绝岛 · 江上小蓬莱' },
-  { name: '菱湖风景区', city: '安庆市', county: '迎江区', lat: 30.53, lng: 117.05, value: 16, level: '4A', cat: 'leisure', desc: '安庆城市绿心' },
+  { name: '天柱山', city: '安庆市', county: '潜山市', lat: 30.72, lng: 116.45, level: '5A', cat: 'nature', desc: '古南岳 · 奇峰怪石云海幽洞' },
+  { name: '迎江寺·振风塔', city: '安庆市', county: '迎江区', lat: 30.51, lng: 117.06, level: '国家级文保', cat: 'culture', desc: '万里长江第一塔' },
+  { name: '花亭湖', city: '安庆市', county: '太湖县', lat: 30.42, lng: 116.33, level: '4A', cat: 'nature', desc: '大别山南麓 · 千岛之湖' },
+  { name: '小孤山', city: '安庆市', county: '宿松县', lat: 29.98, lng: 116.35, level: '省级名胜', cat: 'nature', desc: '长江绝岛 · 江上小蓬莱' },
+  { name: '菱湖风景区', city: '安庆市', county: '迎江区', lat: 30.53, lng: 117.05, level: '4A', cat: 'leisure', desc: '安庆城市绿心' },
 
   // ===== 芜湖市 =====
-  { name: '方特旅游区', city: '芜湖市', county: '鸠江区', lat: 31.35, lng: 118.43, value: 260, level: '5A', cat: 'leisure', desc: '四大主题园区 · 东方神画' },
-  { name: '鸠兹古镇', city: '芜湖市', county: '鸠江区', lat: 31.34, lng: 118.42, value: 44, level: '4A', cat: 'village', desc: '2500 年徽派古镇 · 徽商文化' },
-  { name: '马仁奇峰', city: '芜湖市', county: '繁昌区', lat: 31.08, lng: 118.18, value: 36, level: '4A', cat: 'nature', desc: '皖南张家界 · 江滨小黄山' },
-  { name: '赭山公园', city: '芜湖市', county: '镜湖区', lat: 31.34, lng: 118.37, value: 30, level: '4A', cat: 'leisure', desc: '赭塔晴岚 · 城市绿洲' },
-  { name: '天门山', city: '芜湖市', county: '鸠江区', lat: 31.42, lng: 118.42, value: 12, level: '—', cat: 'nature', desc: '天门中断楚江开 · 李白诗境' },
+  { name: '方特旅游区', city: '芜湖市', county: '鸠江区', lat: 31.35, lng: 118.43, level: '5A', cat: 'leisure', desc: '四大主题园区 · 东方神画' },
+  { name: '鸠兹古镇', city: '芜湖市', county: '鸠江区', lat: 31.34, lng: 118.42, level: '4A', cat: 'village', desc: '2500 年徽派古镇 · 徽商文化' },
+  { name: '马仁奇峰', city: '芜湖市', county: '繁昌区', lat: 31.08, lng: 118.18, level: '4A', cat: 'nature', desc: '皖南张家界 · 江滨小黄山' },
+  { name: '赭山公园', city: '芜湖市', county: '镜湖区', lat: 31.34, lng: 118.37, level: '4A', cat: 'leisure', desc: '赭塔晴岚 · 城市绿洲' },
+  { name: '天门山', city: '芜湖市', county: '鸠江区', lat: 31.42, lng: 118.42, level: '—', cat: 'nature', desc: '天门中断楚江开 · 李白诗境' },
 
   // ===== 马鞍山市 =====
-  { name: '采石矶', city: '马鞍山市', county: '雨山区', lat: 31.65, lng: 118.50, value: 52, level: '5A', cat: 'nature', desc: '长江三矶 · 诗仙李白捉月处' },
-  { name: '褒禅山', city: '马鞍山市', county: '含山县', lat: 31.70, lng: 118.15, value: 22, level: '4A', cat: 'culture', desc: '游褒禅山记 · 华阳洞天' },
-  { name: '霸王祠', city: '马鞍山市', county: '和县', lat: 31.75, lng: 118.35, value: 14, level: '3A', cat: 'culture', desc: '西楚霸王项羽祠 · 乌江自刎处' },
-  { name: '太湖山', city: '马鞍山市', county: '含山县', lat: 31.60, lng: 118.08, value: 10, level: '4A', cat: 'nature', desc: '江北小九华 · 原始次生林' },
-  { name: '李白文化园', city: '马鞍山市', county: '当涂县', lat: 31.55, lng: 118.45, value: 13, level: '4A', cat: 'culture', desc: '诗仙终老长眠之地' },
+  { name: '采石矶', city: '马鞍山市', county: '雨山区', lat: 31.65, lng: 118.50, level: '5A', cat: 'nature', desc: '长江三矶 · 诗仙李白捉月处' },
+  { name: '褒禅山', city: '马鞍山市', county: '含山县', lat: 31.70, lng: 118.15, level: '4A', cat: 'culture', desc: '游褒禅山记 · 华阳洞天' },
+  { name: '霸王祠', city: '马鞍山市', county: '和县', lat: 31.75, lng: 118.35, level: '3A', cat: 'culture', desc: '西楚霸王项羽祠 · 乌江自刎处' },
+  { name: '太湖山', city: '马鞍山市', county: '含山县', lat: 31.60, lng: 118.08, level: '4A', cat: 'nature', desc: '江北小九华 · 原始次生林' },
+  { name: '李白文化园', city: '马鞍山市', county: '当涂县', lat: 31.55, lng: 118.45, level: '4A', cat: 'culture', desc: '诗仙终老长眠之地' },
 
   // ===== 六安市 =====
-  { name: '天堂寨', city: '六安市', county: '金寨县', lat: 31.20, lng: 115.75, value: 96, level: '5A', cat: 'nature', desc: '大别山第二高峰 · 华东原始森林' },
-  { name: '万佛湖', city: '六安市', county: '舒城县', lat: 31.30, lng: 116.72, value: 62, level: '5A', cat: 'nature', desc: '安徽千岛湖 · 世界第一人工土石坝' },
-  { name: '皖西大裂谷', city: '六安市', county: '金安区', lat: 31.62, lng: 116.48, value: 26, level: '4A', cat: 'nature', desc: '侏罗纪 V 形大裂谷 · 三道闸' },
-  { name: '大别山主峰·白马尖', city: '六安市', county: '霍山县', lat: 31.10, lng: 116.25, value: 21, level: '4A', cat: 'nature', desc: '大别山最高峰 · 海拔 1777 米' },
-  { name: '燕子河大峡谷', city: '六安市', county: '金寨县', lat: 31.28, lng: 115.90, value: 19, level: '4A', cat: 'nature', desc: '天坑奇观 · 飞瀑流泉' },
+  { name: '天堂寨', city: '六安市', county: '金寨县', lat: 31.20, lng: 115.75, level: '5A', cat: 'nature', desc: '大别山第二高峰 · 华东原始森林' },
+  { name: '万佛湖', city: '六安市', county: '舒城县', lat: 31.30, lng: 116.72, level: '5A', cat: 'nature', desc: '安徽千岛湖 · 世界第一人工土石坝' },
+  { name: '皖西大裂谷', city: '六安市', county: '金安区', lat: 31.62, lng: 116.48, level: '4A', cat: 'nature', desc: '侏罗纪 V 形大裂谷 · 三道闸' },
+  { name: '大别山主峰·白马尖', city: '六安市', county: '霍山县', lat: 31.10, lng: 116.25, level: '4A', cat: 'nature', desc: '大别山最高峰 · 海拔 1777 米' },
+  { name: '燕子河大峡谷', city: '六安市', county: '金寨县', lat: 31.28, lng: 115.90, level: '4A', cat: 'nature', desc: '天坑奇观 · 飞瀑流泉' },
 
   // ===== 滁州市 =====
-  { name: '琅琊山·醉翁亭', city: '滁州市', county: '琅琊区', lat: 32.28, lng: 118.31, value: 55, level: '4A', cat: 'culture', desc: '醉翁亭记 · 全国四大名亭之首' },
-  { name: '明中都遗址', city: '滁州市', county: '凤阳县', lat: 32.85, lng: 117.56, value: 28, level: '国家考古遗址公园', cat: 'culture', desc: '大明第一座都城 · 故宫之蓝本' },
-  { name: '狼巷迷谷', city: '滁州市', county: '凤阳县', lat: 32.80, lng: 117.52, value: 17, level: '4A', cat: 'nature', desc: '天然喀斯特迷宫' },
-  { name: '韭山洞', city: '滁州市', county: '凤阳县', lat: 32.82, lng: 117.55, value: 14, level: '4A', cat: 'nature', desc: '江北第一洞 · 五亿年溶洞' },
-  { name: '小岗村', city: '滁州市', county: '凤阳县', lat: 32.85, lng: 117.62, value: 31, level: '4A', cat: 'culture', desc: '中国农村改革第一村 · 大包干' },
+  { name: '琅琊山·醉翁亭', city: '滁州市', county: '琅琊区', lat: 32.28, lng: 118.31, level: '4A', cat: 'culture', desc: '醉翁亭记 · 全国四大名亭之首' },
+  { name: '明中都遗址', city: '滁州市', county: '凤阳县', lat: 32.85, lng: 117.56, level: '国家考古遗址公园', cat: 'culture', desc: '大明第一座都城 · 故宫之蓝本' },
+  { name: '狼巷迷谷', city: '滁州市', county: '凤阳县', lat: 32.80, lng: 117.52, level: '4A', cat: 'nature', desc: '天然喀斯特迷宫' },
+  { name: '韭山洞', city: '滁州市', county: '凤阳县', lat: 32.82, lng: 117.55, level: '4A', cat: 'nature', desc: '江北第一洞 · 五亿年溶洞' },
+  { name: '小岗村', city: '滁州市', county: '凤阳县', lat: 32.85, lng: 117.62, level: '4A', cat: 'culture', desc: '中国农村改革第一村 · 大包干' },
 ]
 
 // ---------------- 徽州文化圈外 8 市：简略标注（示例，粗略定位） ----------------
@@ -101,40 +101,7 @@ export const OTHER_CITY_SITES = [
   { name: '花戏楼', city: '亳州市', county: '谯城区', lat: 33.87, lng: 115.78, tag: '砖雕艺术国宝' },
 ]
 
-// ---------------- 目的地游客量排行 TOP8（示例口径，万人次/年） ----------------
-export const SITE_RANKING = [
-  { label: '黄山风景区', value: 320.5 },
-  { label: '方特旅游区', value: 260.0 },
-  { label: '九华山', value: 210.0 },
-  { label: '宏村', value: 185.0 },
-  { label: '西递', value: 152.3 },
-  { label: '屯溪老街', value: 128.6 },
-  { label: '天堂寨', value: 96.0 },
-  { label: '天柱山', value: 88.0 },
-]
-
-// ---------------- 游客画像（示例） ----------------
-export const VISITOR_AGE = [
-  { name: '18-25', value: 38 },
-  { name: '26-35', value: 34 },
-  { name: '36-50', value: 20 },
-  { name: '50+', value: 8 },
-]
-export const VISITOR_SOURCE = [
-  { name: '省内', value: 42 },
-  { name: '长三角', value: 36 },
-  { name: '京津翼', value: 9 },
-  { name: '珠三角', value: 7 },
-  { name: '其他', value: 6 },
-]
-
-// ---------------- 实时热词（示例） ----------------
-export const HOT_WORDS = [
-  '马头墙', '四水归堂', '徽墨', '歙砚', '徽商', '文房四宝', '棠樾牌坊',
-  '古村落', '徽派建筑', '新安画派', '徽州三雕', '万安罗盘', '黄山毛峰', '徽剧',
-]
-
-// ---------------- 徽州非遗名录（示例） ----------------
+// ---------------- 徽州非遗名录（国家级/省级，依据公开非遗名录） ----------------
 export const HERITAGE_LIST = [
   { name: '徽剧', level: '国家级', type: '传统戏剧' },
   { name: '徽州三雕（木/石/砖）', level: '国家级', type: '传统美术' },
@@ -163,11 +130,12 @@ export const CRAFT_CATEGORIES = [
 ]
 
 // ---------------- 底部核心指标（示例口径） ----------------
+// 底部核心指标（2024 年度 · 黄山市政府工作报告）
 export const FOOTER_STATS = [
-  { title: '文旅综合收入', value: 91.2, unit: '亿元', icon: '徽' },
-  { title: '年累计访客', value: 560.4, unit: '万人次', icon: '旅' },
-  { title: 'AI 作品生成', value: 8.9, unit: '万次', icon: 'AI' },
-  { title: '文创衍生品', value: 12.6, unit: '万件', icon: '文' },
+  { title: '全年游客接待量', value: 9222.9, unit: '万人次', icon: '旅' },
+  { title: '旅游总花费', value: 841.77, unit: '亿元', icon: '徽' },
+  { title: '过夜登记游客', value: 2271, unit: '万人次', icon: '客' },
+  { title: '黄山主景区接待', value: 490, unit: '万人次', icon: '山' },
 ]
 
 // ---------------- 头部滚动资讯（示例） ----------------
@@ -183,4 +151,4 @@ export const NEWS_TICKER = [
 ]
 
 // ---------------- 数据声明 ----------------
-export const DATA_NOTE = '示例演示数据 · 景点清单及等级经公开资料核实 · 游客量等统计为示例口径，正式数据接入阶段核入'
+export const DATA_NOTE = '数据来源：游客接待量、旅游总花费、过夜游客、黄山主景区接待均为 2024 年度官方数据（黄山市政府工作报告）；景点清单经文旅部门公开资料核实；知识库文档 60 篇为项目真实加载'

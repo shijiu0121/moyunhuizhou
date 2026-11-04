@@ -1,0 +1,8 @@
+# Keep published source checksums stable across Windows and Unix checkouts.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.docx binary
+*.zip binary

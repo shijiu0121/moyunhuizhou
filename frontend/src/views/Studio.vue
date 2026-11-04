@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { generateImage } from '../api'
+import { generateImage, getGenMode, switchGenMode } from '../api'
 import { ElMessage } from 'element-plus'
 
 /* ================= 生成参数 ================= */
@@ -13,12 +13,11 @@ const negative = ref('')
 const seedRandom = ref(true)
 const seedVal = ref(42)
 
+// 自训徽派 LoRA 两枚：lora_building_03（写实建筑）+ lora_shuimo_05（水墨）。
+// 风格前缀用于触发对应 LoRA，style 传给后端控制叠加配比。
 const STYLES = [
-  { key: 'ink',    label: '水墨', prefix: '徽派水墨画，墨韵淋漓，浓淡相宜，' },
-  { key: 'gongbi', label: '工笔', prefix: '徽州工笔画，线条细腻，设色清雅，' },
-  { key: 'green',  label: '青绿', prefix: '青绿山水画，色彩明丽，' },
-  { key: 'photo',  label: '写实', prefix: '高清写实摄影，真实光影与质感，' },
-  { key: 'print',  label: '版画', prefix: '徽州木刻版画，黑白分明，刀味十足，' },
+  { key: 'ink',   label: '水墨', prefix: '徽派水墨画，墨韵淋漓，浓淡相宜，' },
+  { key: 'photo', label: '写实', prefix: '徽州古村落建筑，马头墙，白墙黛瓦，高清写实摄影，无人物，' },
 ]
 const ASPECTS = {
   '1:1': [1024, 1024],
@@ -86,7 +85,7 @@ async function onGenerate() {
   loading.value = true
   const [w, h] = ASPECTS[aspect.value]
   const finalPrompt = buildPrompt()
-  const opts = { negative_prompt: negative.value || null, width: w, height: h }
+  const opts = { negative_prompt: negative.value || null, width: w, height: h, style: styleKey.value }
 
   if (mode.value === 'quick') {
     single.value = null
@@ -124,7 +123,7 @@ async function regenerateCell(i) {
   gridLoading.value[i] = true
   try {
     grid.value[i] = await generateImage(buildPrompt(), {
-      negative_prompt: negative.value || null, width: w, height: h, seed: nextSeed(),
+      negative_prompt: negative.value || null, width: w, height: h, seed: nextSeed(), style: styleKey.value,
     })
   } catch (e) {
     ElMessage.error('重画失败，请稍后再试')
@@ -139,7 +138,7 @@ async function regenerateSingle() {
   const [w, h] = ASPECTS[aspect.value]
   try {
     single.value = await generateImage(buildPrompt(), {
-      negative_prompt: negative.value || null, width: w, height: h, seed: nextSeed(),
+      negative_prompt: negative.value || null, width: w, height: h, seed: nextSeed(), style: styleKey.value,
     })
   } catch (e) {
     ElMessage.error('重画失败，请稍后再试')
@@ -190,10 +189,24 @@ function pushHistory(item) {
 function onHistoryClick(i) {
   const h = history.value[i]
   prompt.value = h.prompt
-  styleKey.value = h.style
+  // 旧历史可能是已被精简掉的风格（工笔/青绿/版画），只接受当前存在的风格
+  if (STYLES.some((s) => s.key === h.style)) styleKey.value = h.style
   if (h.aspect && ASPECTS[h.aspect]) aspect.value = h.aspect
   ElMessage.success('已载入「' + h.prompt.slice(0, 14) + '…」的创作参数，可点击生成重现')
   if (h.src) openLightbox(h.src)
+}
+
+/* ================= 出图引擎切换 ================= */
+const engine = ref('local')   // local 本地徽州 LoRA | api 云端智谱
+
+async function setEngine(mode) {
+  try {
+    const d = await switchGenMode(mode)
+    engine.value = d.mode
+    ElMessage.success(d.mode === 'api' ? '已切换到云端智谱（通用国风，无徽州 LoRA）' : '已切换到本地徽州 LoRA')
+  } catch (e) {
+    ElMessage.error('切换失败：' + (e?.response?.data?.detail || e.message))
+  }
 }
 
 onMounted(() => {
@@ -203,6 +216,10 @@ onMounted(() => {
   } catch (e) {
     history.value = []
   }
+  // 拉取后端当前模式；失败时保持默认 local
+  try {
+    getGenMode().then((d) => { engine.value = d.mode })
+  } catch (e) { /* 后端未提供 /gen-mode 时忽略 */ }
 })
 
 // 从四宫格切回快速单张时，若单张为空则复用已生成的格子，避免空白画布
@@ -235,6 +252,18 @@ watch(mode, (m) => {
               :class="{ on: styleKey === s.key }"
               @click="styleKey = s.key"
             >{{ s.label }}</button>
+          </div>
+        </div>
+
+        <div class="console-block">
+          <label class="cb-label">出图引擎</label>
+          <div class="mode-toggle">
+            <button class="mode-btn" :class="{ on: engine === 'local' }" @click="setEngine('local')">
+              <span class="mode-ico">🖥</span>本地徽州 LoRA<span class="mode-sub">徽州风格</span>
+            </button>
+            <button class="mode-btn" :class="{ on: engine === 'api' }" @click="setEngine('api')">
+              <span class="mode-ico">☁</span>云端智谱<span class="mode-sub">通用国风</span>
+            </button>
           </div>
         </div>
 
@@ -304,7 +333,7 @@ watch(mode, (m) => {
           <span class="gen-ink" v-if="loading"></span>
           <span>{{ loading ? '水墨晕染中…' : '🎨 生 成 作 品' }}</span>
         </button>
-        <p class="engine-tip">引擎：本地 SDXL + 徽派 LoRA · 画幅 {{ aspect }} · {{ currentStyle.label }}风格</p>
+        <p class="engine-tip">引擎：{{ engine === 'api' ? '云端智谱' : '本地徽州 LoRA' }} · 画幅 {{ aspect }} · {{ currentStyle.label }}风格</p>
       </aside>
 
       <!-- ===== 右：作品画布 ===== -->
@@ -328,7 +357,7 @@ watch(mode, (m) => {
         <!-- 四宫格 -->
         <div v-else-if="mode === 'batch'" class="grid">
           <div
-            v-for="(cell, i) in 4"
+            v-for="(cell, i) in grid"
             :key="i"
             class="grid-cell"
             :class="{ busy: gridLoading[i] }"

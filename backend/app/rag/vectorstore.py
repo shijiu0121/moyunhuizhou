@@ -11,7 +11,11 @@ logger = logging.getLogger(__name__)
 import os
 from pathlib import Path
 
-VECTOR_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "vector_store"
+VECTOR_DIR = Path(__file__).resolve().parent.parent / "data" / "vector_store"
+
+# embedding 模型本地目录：放在项目内（与知识库 data 同目录），便于整体拷贝/移交时带上模型，队友无需重下
+# 使用中文专用 embedding 模型，检索质量优于多语言模型，且体积小、下载稳定
+MODEL_DIR = Path(__file__).resolve().parent.parent / "data" / "models" / "bge-base-zh-v1.5"
 
 
 class VectorStore:
@@ -21,11 +25,15 @@ class VectorStore:
         self._collection = None
 
     def _get_model(self):
-        """懒加载 bge-m3 embedding 模型（本地 CPU）。"""
+        """懒加载 bge-m3 embedding 模型（本地 CPU，从项目内目录加载）。"""
         if self._model is None:
             from sentence_transformers import SentenceTransformer
-            logger.info("加载 embedding 模型 BAAI/bge-m3 ...")
-            self._model = SentenceTransformer("BAAI/bge-m3")
+            if not (MODEL_DIR / "config.json").exists():
+                raise FileNotFoundError(
+                    f"未找到 bge-m3 模型，请先把模型文件放到 {MODEL_DIR}（需包含 config.json、pytorch_model.bin 等）"
+                )
+            logger.info("加载本地 embedding 模型 %s ...", MODEL_DIR)
+            self._model = SentenceTransformer(str(MODEL_DIR))
         return self._model
 
     def _get_collection(self):

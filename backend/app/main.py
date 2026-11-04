@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
-from .routes import ask, export, generate, tour
+from .routes import ask, export, generate, genmode, tour
 
 logging.basicConfig(level=logging.INFO)
 
@@ -27,6 +27,7 @@ app.include_router(generate.router, prefix="/api")
 app.include_router(ask.router, prefix="/api")
 app.include_router(export.router, prefix="/api")
 app.include_router(tour.router, prefix="/api")
+app.include_router(genmode.router, prefix="/api")
 
 
 @app.get("/")

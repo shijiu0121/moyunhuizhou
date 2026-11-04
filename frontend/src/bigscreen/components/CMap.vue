@@ -71,7 +71,8 @@ const scatterData = CULTURE_SITES.map((s) => ({
   cat: s.cat,
   catName: CAT_NAME[s.cat] || s.cat,
   desc: s.desc,
-  value: [s.lng, s.lat, s.value],
+  visitors: s.visitors,
+  value: [s.lng, s.lat],
 }))
 
 // 徽州文化圈外 8 市：简略标注（淡墨灰点 + 小字）
@@ -97,8 +98,7 @@ const mapOption = ref({
         return `<b style="color:#fff">${d.name}</b>
                 <span style="color:#c9b696">（${d.county} · ${d.level}）</span><br/>
                 <span style="color:${c}">●</span> ${d.catName}<br/>
-                ${d.desc}<br/>
-                <span style="color:#e9b76b">年游客量（示例）${d.value[2]} 万人次</span>`
+                ${d.desc}${d.visitors ? `<br/><span style="color:#e9b76b">2024 主景区接待 ${d.visitors} 万人次</span>` : ''}</span>`
       }
       if (p.seriesName === '文化圈外标注') {
         const s = sparseData[p.dataIndex]
@@ -133,7 +133,7 @@ const mapOption = ref({
       coordinateSystem: 'geo',
       data: scatterData,
       symbol: 'circle',
-      symbolSize: (val) => 7 + Math.sqrt(val[2]) * 0.45,
+      symbolSize: 8,
       itemStyle: (params) => ({
         color: CATEGORY_COLORS[scatterData[params.dataIndex].cat],
         borderColor: '#f3ece3',

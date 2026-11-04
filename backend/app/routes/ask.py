@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from ..rag.retriever import RagAgent
+from ..rag.graph import build_knowledge_graph
 
 router = APIRouter(tags=["ask"])
 
@@ -18,6 +19,12 @@ def _get_agent() -> RagAgent:
 
 class AskRequest(BaseModel):
     question: str
+
+
+@router.get("/ask/knowledge-graph")
+def knowledge_graph():
+    """读取问答知识库生成图谱，不触发向量索引或模型推理。"""
+    return build_knowledge_graph()
 
 
 @router.post("/ask")

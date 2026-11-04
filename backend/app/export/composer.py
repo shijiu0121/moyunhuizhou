@@ -16,6 +16,7 @@ SEAL = (160, 58, 46)          # 朱砂红
 GOLD = (197, 123, 58)         # 秋柿金
 
 _FONT_CANDIDATES = [
+    "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",  # Linux（AutoDL 服务器，文泉驿微米黑）
     r"C:\Windows\Fonts\msyhbd.ttc",   # 微软雅黑 Bold
     r"C:\Windows\Fonts\msyh.ttc",     # 微软雅黑
     r"C:\Windows\Fonts\simhei.ttf",   # 黑体

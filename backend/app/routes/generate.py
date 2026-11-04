@@ -14,6 +14,7 @@ class GenerateRequest(BaseModel):
     width: int = 1024
     height: int = 1024
     seed: int | None = 42
+    style: str = "balanced"  # ink | photo | balanced，控制 LoRA 叠加配比
 
 
 @router.post("/generate")
@@ -26,5 +27,6 @@ async def generate(req: GenerateRequest):
         width=req.width,
         height=req.height,
         seed=req.seed,
+        style=req.style,
     )
     return Response(content=img_bytes, media_type="image/png")

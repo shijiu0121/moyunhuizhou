@@ -20,7 +20,7 @@ const menus = [
         <span class="logo-text">墨蕴徽州 <i>· 徽文化数字文创智造平台</i></span>
         <nav class="menu">
           <router-link v-for="m in menus" :key="m.path" :to="m.path" class="menu-item"
-                       :class="{ active: route.path === m.path }">
+                       :class="{ active: route.path === m.path || (m.path !== '/' && route.path.startsWith(m.path + '/')) }">
             {{ m.label }}
           </router-link>
         </nav>
@@ -121,5 +121,16 @@ const menus = [
 }
 .app-main {
   padding: 0;
+}
+@media (max-width: 1100px) {
+  .logo-text i { display: none; }
+  .menu-item { white-space: nowrap; }
+}
+@media (max-width: 760px) {
+  .navbar { height: auto; }
+  .navbar-inner { height: auto; min-height: 64px; padding: 12px 16px 0; gap: 10px; flex-wrap: wrap; }
+  .logo-text { font-size: 17px; letter-spacing: 3px; }
+  .menu { width: 100%; margin-left: 0; overflow-x: auto; padding-bottom: 9px; gap: 2px; }
+  .menu-item { flex-shrink: 0; font-size: 12px; padding: 7px 10px; letter-spacing: 1px; }
 }
 </style>

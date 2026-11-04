@@ -16,6 +16,7 @@ dist/
 
 # 数据（大文件不入库）
 backend/app/data/vector_store/
+backend/app/data/models/
 backend/app/data/*.jsonl
 backend/app/data/*.txt
 
@@ -35,3 +36,16 @@ backend/app/data/*.txt
 .idea/
 .vscode/
 .DS_Store
+
+# 随源码分发的知识文本与页面素材。模型、索引和生成产物仍保持忽略。
+!backend/app/data/*.txt
+!frontend/src/assets/**/*.png
+!frontend/src/assets/**/*.jpg
+!frontend/src/assets/**/*.jpeg
+!brand/*.png
+!deliverables/*.png
+!logo.jpg
+
+# 真实配置及切换模式时产生的临时文件
+.env.*
+!.env.example
